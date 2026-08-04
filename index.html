@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2B54F5;--blue-dark:#1C3AC4;--blue-soft:#E7ECFE;
+  --text:#0D1220;--muted:#5D6579;--line:#E3E8F4;--ok:#12A150;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{color:var(--text);font-family:'Manrope',-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.hidden{display:none !important}
+
+/* ---- ПЛАВНІ ГРАДІЄНТНІ ПЕРЕХОДИ, ЖОДНИХ ЛІНІЙ ---- */
+#view-landing{
+  background:
+    linear-gradient(180deg,
+      #F4F7FF 0%,
+      #FBFCFF 9%,
+      #FFFFFF 17%,
+      #F6F8FE 27%,
+      #EFF3FE 36%,
+      #F7F9FF 46%,
+      #FFFFFF 55%,
+      #F5F8FF 65%,
+      #EEF2FE 74%,
+      #F8FAFF 84%,
+      #FFFFFF 93%,
+      #F4F7FF 100%);
+}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 26px;border-radius:100px;font-weight:700;font-size:15px;
+  text-decoration:none;border:none;cursor:pointer;transition:.22s;font-family:inherit;white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(43,84,245,.22)}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.8);color:var(--text);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-dark{background:#0D1220;color:#fff}
+.btn-dark:hover{background:#000}
+.btn-lg{padding:17px 34px;font-size:16.5px}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* ============ NAV ============ */
+nav{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.72);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:.35s}
+nav.scrolled{background:rgba(255,255,255,.9);box-shadow:0 6px 26px rgba(20,35,90,.06)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;cursor:pointer}
+.logo-mark{width:33px;height:33px;border-radius:10px;display:grid;place-items:center;
+  background:var(--blue);color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
+.nav-links{display:flex;gap:26px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14.5px;font-weight:500}
+.nav-links a:hover{color:var(--blue)}
+.nav-right{display:flex;align-items:center;gap:9px}
+.nav-cta{padding:11px 20px;font-size:14px}
+
+/* ============ HERO ============ */
+header{padding:60px 0 74px}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:46px;align-items:start}
+.eyebrow{font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  font-weight:700;margin-bottom:14px}
+h1{font-size:clamp(31px,4.4vw,52px);line-height:1.08;font-weight:800;letter-spacing:-1.7px;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--blue)}
+.lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:540px;margin-bottom:28px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:30px}
+.hero-meta{display:flex;gap:30px;flex-wrap:wrap}
+.hero-meta div{display:flex;flex-direction:column;gap:2px}
+.hero-meta b{font-size:23px;font-weight:800;letter-spacing:-.6px}
+.hero-meta span{font-size:13px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:100px;
+  background:var(--blue-soft);color:var(--blue);font-size:13px;font-weight:700;margin-bottom:18px}
+.price-card{border:1px solid var(--line);border-radius:24px;padding:30px;background:#fff;
+  box-shadow:0 18px 48px rgba(20,35,90,.09)}
+.price-old{color:var(--muted);text-decoration:line-through;font-size:16px}
+.price-now{font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1;margin:5px 0 4px;color:var(--blue)}
+.price-now small{font-size:20px;color:var(--muted);font-weight:600}
+.price-note{color:var(--muted);font-size:14px;margin-bottom:20px}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+.price-list li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.4}
+.check{flex-shrink:0;width:19px;height:19px;border-radius:50%;background:var(--blue-soft);
+  display:grid;place-items:center;color:var(--blue);font-size:11px;font-weight:800;margin-top:1px}
+.price-card .btn{width:100%}
+.guarantee{text-align:center;font-size:13px;color:var(--muted);margin-top:13px}
+
+section{padding:80px 0;position:relative}
+.tag{display:inline-block;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--blue);font-weight:700;margin-bottom:13px}
+h2{font-size:clamp(26px,3.4vw,40px);font-weight:800;letter-spacing:-1.1px;line-height:1.13;margin-bottom:15px}
+.sub{color:var(--muted);font-size:16.5px;line-height:1.6;max-width:620px;margin-bottom:42px}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{border:1px solid var(--line);border-radius:20px;padding:26px;background:rgba(255,255,255,.75);
+  backdrop-filter:blur(8px)}
+.card-ico{width:40px;height:40px;border-radius:12px;background:var(--blue-soft);color:var(--blue);
+  display:grid;place-items:center;font-size:17px;font-weight:800;margin-bottom:15px}
+.card h3{font-size:17.5px;font-weight:700;margin-bottom:8px}
+.card p{color:var(--muted);font-size:14.5px;line-height:1.55}
+
+/* ============ 3D ДОРОГА ============ */
+.road{position:relative;margin-top:14px}
+.road svg{width:100%;display:block;overflow:visible}
+.road-cards{position:absolute;inset:0;pointer-events:none}
+.rc{position:absolute;width:min(310px,32%);pointer-events:auto}
+.rc-in{border-radius:18px;padding:17px 19px;background:rgba(255,255,255,.94);
+  border:1px solid var(--line);box-shadow:0 14px 34px rgba(20,35,90,.1);
+  backdrop-filter:blur(10px);transition:.25s;cursor:default}
+.rc:hover .rc-in{box-shadow:0 20px 44px rgba(43,84,245,.18);border-color:#C2CFFA;transform:translateY(-3px)}
+.rc-num{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:24px;
+  padding:0 9px;border-radius:100px;background:var(--blue-soft);color:var(--blue);
+  font-size:12px;font-weight:800;margin-bottom:9px;letter-spacing:.4px}
+.rc-in h3{font-size:16px;font-weight:800;line-height:1.25;margin-bottom:6px;letter-spacing:-.3px}
+.rc-in p{font-size:12.8px;color:var(--muted);line-height:1.45}
+.rc.right{transform:translate(30px,-50%)}
+.rc.left{transform:translate(calc(-100% - 30px),-50%)}
+.road-end{text-align:center;margin-top:26px}
+.road-end .btn{pointer-events:auto}
+
+/* мобільна вертикальна дорога */
+.road-m{position:relative;padding-left:46px;margin-top:10px}
+.road-m::before{content:'';position:absolute;left:17px;top:6px;bottom:6px;width:5px;border-radius:100px;
+  background:linear-gradient(180deg,#8FA9FF,var(--blue) 45%,#132C9B)}
+.rm{position:relative;margin-bottom:14px}
+.rm::before{content:'';position:absolute;left:-37px;top:20px;width:17px;height:17px;border-radius:50%;
+  background:#fff;border:4px solid var(--blue);box-shadow:0 0 0 4px rgba(43,84,245,.14)}
+.rm-in{border-radius:16px;padding:16px 18px;background:rgba(255,255,255,.95);
+  border:1px solid var(--line);box-shadow:0 8px 22px rgba(20,35,90,.07)}
+.rm-in h3{font-size:16px;font-weight:800;margin-bottom:5px;line-height:1.25}
+.rm-in p{font-size:13px;color:var(--muted);line-height:1.45}
+
+.final{border-radius:28px;padding:58px 42px;text-align:center;
+  background:linear-gradient(140deg,#3A62FF,#1B36C4);color:#fff;
+  box-shadow:0 26px 60px rgba(27,54,196,.28)}
+.final h2{margin-bottom:13px;color:#fff}
+.final .sub{margin:0 auto 30px;color:rgba(255,255,255,.86)}
+.final .btn-primary{background:#fff;color:var(--blue);box-shadow:none}
+.final .btn-primary:hover{background:#EEF2FF}
+.final .guarantee{color:rgba(255,255,255,.78)}
+
+footer{padding:44px 0 40px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot p{color:var(--muted);font-size:14px}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}
+.foot-links a{color:var(--muted);font-size:14px;text-decoration:none;cursor:pointer}
+.foot-links a:hover{color:var(--blue)}
+.foot-tg{color:var(--blue) !important;font-weight:700}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ AUTH / CHECKOUT ============ */
+.center-page{min-height:100vh;display:grid;place-items:center;padding:40px 20px;
+  background:linear-gradient(160deg,#F0F4FF,#FBFCFF 55%,#EEF3FE)}
+.panel{width:100%;max-width:440px;background:#fff;border:1px solid var(--line);
+  border-radius:24px;padding:34px;box-shadow:0 20px 54px rgba(20,35,90,.1)}
+.panel.wide{max-width:560px}
+.panel-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;
+  margin-bottom:22px;justify-content:center}
+.panel h2{font-size:25px;margin-bottom:8px;letter-spacing:-.7px;text-align:center}
+.panel .p-sub{color:var(--muted);font-size:15px;text-align:center;margin-bottom:24px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:7px}
+.field input{width:100%;padding:14px 17px;border:1px solid var(--line);border-radius:100px;
+  font-size:15px;font-family:inherit;outline:none;transition:.2s;background:#fff}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(43,84,245,.11)}
+.field input.err{border-color:#E5484D}
+.field .msg{font-size:12.5px;color:#E5484D;margin-top:6px;padding-left:17px;display:none}
+.field .msg.show{display:block}
+.panel .btn{width:100%;margin-top:8px}
+.alt-link{text-align:center;font-size:14.5px;color:var(--muted);margin-top:18px}
+.alt-link b{color:var(--blue);cursor:pointer;font-weight:700}
+.terms{font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+.order{border:1px solid var(--line);border-radius:16px;padding:20px;background:#F7F9FE;margin-bottom:20px}
+.order-row{display:flex;justify-content:space-between;font-size:15px;margin-bottom:10px;gap:14px}
+.order-row.total{border-top:1px solid var(--line);padding-top:12px;margin-top:12px;margin-bottom:0;
+  font-size:19px;font-weight:800}
+.order-row.total b{color:var(--blue)}
+.order-row span{color:var(--muted)}
+.promo{display:flex;gap:9px;margin-bottom:18px}
+.promo input{flex:1;min-width:0;padding:12px 17px;border:1px solid var(--line);border-radius:100px;
+  font-size:14px;font-family:inherit;outline:none}
+.promo button{padding:12px 20px;border-radius:100px;border:1px solid var(--line);background:#fff;
+  font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap}
+.promo button:hover{border-color:var(--blue);color:var(--blue)}
+.pay-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.pay-note{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5}
+.divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;margin:12px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line)}
+.success-ico{width:64px;height:64px;border-radius:50%;background:#E6F6EC;color:var(--ok);
+  display:grid;place-items:center;font-size:30px;margin:0 auto 20px}
+.btn-google{background:#fff;color:#1F2430;border:1px solid #DADCE0;font-weight:600}
+.btn-google:hover{background:#F7F8FA;border-color:#C6C9D0}
+.g-ico{width:19px;height:19px;flex-shrink:0}
+.notice{border-radius:14px;padding:13px 16px;font-size:14px;line-height:1.5;margin-bottom:16px;display:none}
+.notice.show{display:block}
+.notice.err{background:#FDECEC;color:#B4232A}
+.notice.ok{background:#E9F7EF;color:#0E7A3C}
+.notice.info{background:var(--blue-soft);color:var(--blue-dark)}
+.btn.loading{pointer-events:none;opacity:.65}
+
+/* ============ КАБІНЕТ ============ */
+#view-cabinet{background:#fff}
+.cab-top{height:62px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);
+  box-shadow:0 2px 18px rgba(20,35,90,.06);position:relative;z-index:20}
+.cab-right{display:flex;align-items:center;gap:10px}
+.support{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:100px;
+  border:1px solid var(--line);color:var(--blue);font-size:13.5px;font-weight:700;
+  text-decoration:none;transition:.2s;background:#fff;cursor:pointer}
+.support:hover{background:var(--blue-soft);border-color:var(--blue-soft)}
+.ava{width:34px;height:34px;border-radius:50%;background:var(--blue-soft);
+  display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--blue);cursor:pointer;flex-shrink:0}
+.burger{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.burger i{display:block;width:16px;height:2px;background:var(--text);border-radius:2px}
+.app-grid{display:grid;grid-template-columns:344px 1fr;height:calc(100vh - 62px)}
+aside{background:linear-gradient(180deg,#F7F9FF,#F1F4FC);display:flex;flex-direction:column;overflow:hidden}
+.side-head{padding:20px 22px 16px}
+.course-name{font-size:16px;font-weight:800;margin-bottom:14px;line-height:1.3}
+.prog-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.prog-row span{font-size:12.5px;color:var(--muted)}
+.prog-row b{font-size:15px;color:var(--blue);font-weight:800}
+.bar{height:6px;border-radius:100px;background:#DFE5F3;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#5C82FF,var(--blue));
+  border-radius:100px;transition:width .5s}
+.cert-hint{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.45}
+.tabs{display:flex;gap:4px;padding:6px 16px 0}
+.tab{flex:1;padding:9px;border-radius:9px;text-align:center;font-size:14px;font-weight:600;
+  color:var(--muted);cursor:pointer;transition:.2s}
+.tab.on{color:var(--blue);background:#fff;box-shadow:0 3px 12px rgba(20,35,90,.07)}
+.side-scroll{flex:1;overflow-y:auto;padding:13px 12px 30px}
+.side-scroll::-webkit-scrollbar{width:5px}
+.side-scroll::-webkit-scrollbar-thumb{background:#C9D3F5;border-radius:10px}
+.m{margin-bottom:5px}
+.m-head{display:flex;align-items:center;gap:11px;padding:11px;border-radius:10px;cursor:pointer;user-select:none}
+.m-head:hover{background:rgba(255,255,255,.8)}
+.m-num{flex-shrink:0;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;
+  background:var(--blue-soft);color:var(--blue);font-size:11.5px;font-weight:800}
+.m-t{flex:1;min-width:0}
+.m-t b{display:block;font-size:14px;font-weight:700}
+.m-t span{font-size:11.5px;color:var(--muted)}
+.chev{color:#A9B2C9;font-size:10px;transition:.25s}
+.m.open .chev{transform:rotate(90deg);color:var(--blue)}
+.m-list{display:none;padding:2px 0 8px 12px;margin-left:24px;border-left:1px solid #DCE3F4}
+.m.open .m-list{display:block}
+.les{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;cursor:pointer;position:relative}
+.les:hover{background:rgba(255,255,255,.9)}
+.les.active{background:#fff;box-shadow:0 3px 12px rgba(20,35,90,.08)}
+.les.active::before{content:'';position:absolute;left:-13px;top:50%;transform:translateY(-50%);
+  width:2px;height:19px;background:var(--blue);border-radius:2px}
+.ico{flex-shrink:0;width:18px;text-align:center;font-size:11px;color:#A9B2C9}
+.les.active .ico{color:var(--blue)}
+.les-t{flex:1;min-width:0}
+.les-t b{display:block;font-size:13.5px;font-weight:500;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.les.active .les-t b{color:var(--blue);font-weight:700}
+.les-t span{font-size:11px;color:var(--muted)}
+.tick{flex-shrink:0;width:17px;height:17px;border-radius:50%;border:1px solid #D5DCEE;
+  display:grid;place-items:center;font-size:9px;color:transparent;background:#fff;transition:.2s}
+.les.done .tick{background:var(--blue);border-color:var(--blue);color:#fff}
+.disc{padding:18px}
+.disc-box{border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff;text-align:center}
+.disc-box h4{font-size:16px;margin-bottom:8px}
+.disc-box p{font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:16px}
+main.cab{overflow-y:auto;padding:30px 40px 60px;background:#fff}
+main.cab::-webkit-scrollbar{width:6px}
+main.cab::-webkit-scrollbar-thumb{background:#C9D3F5;border-radius:10px}
+.crumb{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.crumb b{color:var(--blue);font-weight:600}
+.cab h1{font-size:clamp(21px,3.4vw,28px);letter-spacing:-.9px;margin-bottom:18px}
+.player{aspect-ratio:16/9;border-radius:16px;background:linear-gradient(160deg,#EEF2FD,#E3E9FA);
+  display:grid;place-items:center;position:relative;margin-bottom:18px;overflow:hidden}
+.play{width:74px;height:74px;border-radius:50%;background:var(--blue);color:#fff;
+  display:grid;place-items:center;font-size:24px;cursor:pointer;padding-left:5px;transition:.22s;
+  box-shadow:0 12px 32px rgba(43,84,245,.34);border:none}
+.play:hover{background:var(--blue-dark);transform:scale(1.07)}
+.p-meta{position:absolute;bottom:15px;left:19px;font-size:12.5px;color:var(--muted)}
+.p-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;
+  background:rgba(255,255,255,.96);font-size:14.5px;color:var(--muted);line-height:1.6}
+.act{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:28px}
+.blk{margin-bottom:26px}
+.blk h2{font-size:12.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--blue);
+  font-weight:700;margin-bottom:13px}
+.desc{color:var(--muted);font-size:15.5px;line-height:1.65;max-width:760px}
+.desc strong{color:var(--text);font-weight:700}
+.goals{list-style:none;display:flex;flex-direction:column;gap:9px;max-width:760px}
+.goals li{display:flex;gap:11px;font-size:15px;line-height:1.5;color:var(--muted)}
+.goals li::before{content:'→';color:var(--blue);font-weight:700}
+.files{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;max-width:900px}
+.file{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:13px;
+  border:1px solid var(--line);background:#fff;cursor:pointer;transition:.22s}
+.file:hover{border-color:var(--blue);box-shadow:0 6px 18px rgba(20,35,90,.07)}
+.f-ico{width:36px;height:36px;border-radius:10px;background:var(--blue-soft);color:var(--blue);
+  display:grid;place-items:center;font-size:13px;flex-shrink:0;font-weight:800}
+.file b{display:block;font-size:14px;font-weight:600}
+.file span{font-size:12px;color:var(--muted)}
+.nav-b{display:flex;justify-content:space-between;gap:14px;padding-top:22px;max-width:900px}
+
+/* ============ МОДАЛКА ============ */
+.modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:24px;
+  background:rgba(9,15,35,.45);backdrop-filter:blur(4px)}
+.modal.on{display:grid}
+.modal-in{background:#fff;border-radius:22px;padding:30px;max-width:520px;width:100%;
+  max-height:80vh;overflow-y:auto;box-shadow:0 30px 70px rgba(9,15,35,.3)}
+.modal-in h3{font-size:21px;margin-bottom:14px;letter-spacing:-.5px}
+.modal-in p{color:var(--muted);font-size:15px;line-height:1.65;margin-bottom:12px}
+.modal-in .btn{width:100%;margin-top:10px}
+
+/* ---- профіль ---- */
+.prof{position:relative;max-width:460px}
+.prof-x{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;
+  border:none;background:#F1F4FB;color:var(--muted);font-size:14px;cursor:pointer;transition:.2s}
+.prof-x:hover{background:#E4E9F6;color:var(--text)}
+.prof-top{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.prof-ava{position:relative;width:74px;height:74px;border-radius:50%;flex-shrink:0;cursor:pointer;
+  background:var(--blue-soft) center/cover no-repeat;color:var(--blue);
+  display:grid;place-items:center;font-weight:800;font-size:27px;overflow:hidden}
+.prof-ava-edit{position:absolute;left:0;right:0;bottom:0;padding:4px 0;text-align:center;
+  background:rgba(13,18,32,.72);color:#fff;font-size:10.5px;font-weight:700;opacity:0;transition:.2s}
+.prof-ava:hover .prof-ava-edit{opacity:1}
+.prof-ava.has-img span{display:none}
+.prof-who{min-width:0}
+.prof-who b{display:block;font-size:18px;font-weight:800;letter-spacing:-.3px;margin-bottom:2px}
+.prof-who span{display:block;font-size:13.5px;color:var(--muted);word-break:break-all}
+.prof-who i{display:inline-block;margin-top:7px;font-style:normal;font-size:11.5px;font-weight:700;
+  padding:4px 10px;border-radius:100px;background:#F1F4FB;color:var(--muted)}
+.prof-who i.ok{background:#E6F6EC;color:var(--ok)}
+.prof .field textarea{width:100%;padding:13px 17px;border:1px solid var(--line);border-radius:16px;
+  font-size:15px;font-family:inherit;outline:none;resize:vertical;transition:.2s;background:#fff}
+.prof .field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(43,84,245,.11)}
+.hintline{font-size:12px;color:var(--muted);margin-top:6px;padding-left:17px}
+
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .cards{grid-template-columns:1fr}
+  .nav-links{display:none}
+  section{padding:56px 0}
+  header{padding:40px 0 56px}
+  .final{padding:40px 22px}
+  .app-grid{grid-template-columns:1fr}
+  aside{position:fixed;top:62px;left:0;bottom:0;width:min(340px,86vw);z-index:30;
+    transform:translateX(-102%);transition:transform .3s ease;box-shadow:0 0 50px rgba(9,15,35,.25)}
+  aside.open{transform:none}
+  .burger{display:flex}
+  main.cab{padding:22px 18px 50px}
+  .scrim{position:fixed;inset:62px 0 0;background:rgba(9,15,35,.4);z-index:25;display:none}
+  .scrim.on{display:block}
+  .foot{flex-direction:column;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;scroll-behavior:auto !important}
+  .reveal{opacity:1 !important;transform:none !important}
+}
+@media(max-width:560px){
+  .nav-cta{padding:10px 15px;font-size:13px}
+  .hero-meta{gap:20px}
+  .panel{padding:26px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     НАЛАШТУВАННЯ
+     ========================================================= -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script>
+const TG_NICK    = "@ja28jU";
+const TG_SUPPORT = "https://t.me/ja28jU";
+const PRICE      = 299;
+
+const SUPABASE_URL = "https://dvxvqipwdajsaegawcuw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_pMKqvdBmcjWy5TkuwScW4A_dh5IikyK";
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
+
+<!-- ==================== ЛЕНДИНГ ==================== -->
+<div id="view-landing">
+<nav id="nav">
+  <div class="nav-in">
+    <div class="logo" onclick="go('landing')"><div class="logo-mark">A</div>Aura</div>
+    <div class="nav-links">
+      <a href="#program">Програма</a>
+      <a href="#why">Для кого</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-ghost nav-cta" id="nav-login" onclick="go('login')">Увійти</button>
+      <button class="btn btn-primary nav-cta" id="nav-buy" onclick="go('register')">Купити за 299 ₴</button>
+      <button class="btn btn-ghost nav-cta hidden" id="nav-cab" onclick="go('cabinet')">Мій кабінет</button>
+      <div class="ava hidden" id="nav-ava" onclick="openProfile()" title="Профіль">S</div>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Курс по роботі з Claude</div>
+      <h1>Від першого промту до власних <em>AI-агентів</em></h1>
+      <p class="lead">31 урок, де я показую екран і роблю разом з тобою. Починаємо з нуля — з першого запиту в чат. Закінчуємо агентом, який відповідає твоїм клієнтам у Telegram. Без програмування.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" onclick="go('register')">Забрати курс за 299 ₴</button>
+        <a href="#program" class="btn btn-ghost btn-lg">Дивитись програму</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>31</b><span>урок</span></div>
+        <div><b>8,5</b><span>годин відео</span></div>
+        <div><b>6</b><span>презентацій</span></div>
+        <div><b>∞</b><span>доступ назавжди</span></div>
+      </div>
+    </div>
+    <div class="price-card">
+      <div class="pill">Оновлюється на живих ефірах</div>
+      <div class="price-old">Повна ціна 990 ₴</div>
+      <div class="price-now">299 <small>грн</small></div>
+      <div class="price-note">Одна оплата. Доступ назавжди. Без підписок.</div>
+      <ul class="price-list">
+        <li><span class="check">✓</span> 31 відеоурок із записом екрана</li>
+        <li><span class="check">✓</span> Модуль «Агенти для бізнесу»</li>
+        <li><span class="check">✓</span> 6 презентацій з термінологією</li>
+        <li><span class="check">✓</span> 100 готових промптів</li>
+        <li><span class="check">✓</span> Закритий чат учнів</li>
+        <li><span class="check">✓</span> Іменний сертифікат</li>
+      </ul>
+      <button class="btn btn-primary btn-lg" onclick="go('register')">Почати навчання</button>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="tag">Впізнаєш себе</div>
+      <h2>Проблема не в AI.<br>Проблема в тому, як ти його питаєш.</h2>
+      <p class="sub">Більшість відкривають чат, ставлять питання одним реченням і отримують текст, схожий на статтю з інтернету. Роблять висновок, що це переоцінено. І закривають вкладку.</p>
+    </div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-ico">1</div><h3>Відповіді — суцільна вода</h3>
+        <p>Загальні фрази, які неможливо застосувати. Здається, що AI просто переказує очевидне.</p></div>
+      <div class="card"><div class="card-ico">2</div><h3>Незрозуміло, з чого почати</h3>
+        <p>Купа кнопок, незнайомі слова, десятки інструментів. Не ясно, за що хапатись першим.</p></div>
+      <div class="card"><div class="card-ico">3</div><h3>Все зупиняється на чаті</h3>
+        <p>Питати навчився, а далі що? Як зробити, щоб воно працювало без тебе — ніхто не показує.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="program">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="tag">Програма</div>
+      <h2>Твій шлях</h2>
+      <p class="sub">Дорога веде від першого промту до власної системи агентів. Складність росте плавно — ти ніде не відчуєш, що «це вже не для мене».</p>
+    </div>
+    <div class="road" id="road"></div>
+    <div class="road-end">
+      <button class="btn btn-primary btn-lg" onclick="go('register')">Пройти цей шлях за 299 ₴</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final reveal">
+      <h2>299 гривень.<br>Інший спосіб працювати.</h2>
+      <p class="sub">Починаєш з нуля. Закінчуєш власним агентом, який працює замість тебе.</p>
+      <button class="btn btn-primary btn-lg" onclick="go('register')">Почати за 299 ₴</button>
+      <div class="guarantee" style="margin-top:15px">Доступ відкривається одразу після оплати</div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap foot">
+  <p>© 2026 Aura</p>
+  <div class="foot-links">
+    <a onclick="openDoc('offer')">Договір оферти</a>
+    <a onclick="openDoc('privacy')">Політика конфіденційності</a>
+    <a class="foot-tg" onclick="openTG()">Підтримка: @ja28jU</a>
+  </div>
+</div></footer>
+</div>
+
+<!-- ==================== РЕЄСТРАЦІЯ ==================== -->
+<div id="view-register" class="hidden">
+  <div class="center-page"><div class="panel">
+    <div class="panel-logo"><div class="logo-mark">A</div>Aura</div>
+    <h2>Створити акаунт</h2>
+    <p class="p-sub">Крок 1 з 2 — після реєстрації відкриється оплата</p>
+    <div class="notice" id="r-notice"></div>
+    <button class="btn btn-google btn-lg" onclick="oauth('google')">
+      <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v9.1h12.4c-.5 2.9-2.2 5.4-4.6 7l7.6 5.9c4.4-4.1 6.7-10.1 6.7-17.4z"/><path fill="#FBBC05" d="M10.4 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.4-5.5l-7.6-5.9c-2.1 1.4-4.8 2.3-7.8 2.3-6.4 0-11.7-3.7-13.6-9.2l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      Продовжити з Google
+    </button>
+    <div class="divider">або через пошту</div>
+    <div class="field"><label>Ім'я</label>
+      <input id="r-name" type="text" placeholder="Як до тебе звертатись" autocomplete="name">
+      <div class="msg" id="r-name-msg">Введи ім'я</div></div>
+    <div class="field"><label>Email</label>
+      <input id="r-email" type="email" placeholder="your@email.com" autocomplete="email">
+      <div class="msg" id="r-email-msg">Схоже, email введено неправильно</div></div>
+    <div class="field"><label>Телефон</label>
+      <input id="r-phone" type="tel" placeholder="+380" autocomplete="tel">
+      <div class="msg" id="r-phone-msg">Введи коректний номер телефону</div></div>
+    <div class="field"><label>Пароль</label>
+      <input id="r-pass" type="password" placeholder="Мінімум 6 символів" autocomplete="new-password">
+      <div class="msg" id="r-pass-msg">Пароль має бути щонайменше 6 символів</div></div>
+    <button class="btn btn-primary btn-lg" onclick="doRegister(event)">Продовжити до оплати</button>
+    <div class="terms">Реєструючись, ти погоджуєшся з <b style="cursor:pointer;color:var(--blue)" onclick="openDoc('offer')">договором оферти</b></div>
+    <div class="alt-link">Вже маєш акаунт? <b onclick="go('login')">Увійти</b></div>
+    <div class="alt-link" style="margin-top:8px"><b onclick="go('landing')">← На головну</b></div>
+  </div></div>
+</div>
+
+<!-- ==================== ВХІД ==================== -->
+<div id="view-login" class="hidden">
+  <div class="center-page"><div class="panel">
+    <div class="panel-logo"><div class="logo-mark">A</div>Aura</div>
+    <h2>Вхід у кабінет</h2>
+    <p class="p-sub">Введи дані, які вказував при реєстрації</p>
+    <div class="notice" id="l-notice"></div>
+    <button class="btn btn-google btn-lg" onclick="oauth('google')">
+      <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v9.1h12.4c-.5 2.9-2.2 5.4-4.6 7l7.6 5.9c4.4-4.1 6.7-10.1 6.7-17.4z"/><path fill="#FBBC05" d="M10.4 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.4-5.5l-7.6-5.9c-2.1 1.4-4.8 2.3-7.8 2.3-6.4 0-11.7-3.7-13.6-9.2l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      Увійти з Google
+    </button>
+    <div class="divider">або через пошту</div>
+    <div class="field"><label>Email</label>
+      <input id="l-email" type="email" placeholder="your@email.com" autocomplete="email">
+      <div class="msg" id="l-email-msg">Введи коректний email</div></div>
+    <div class="field"><label>Пароль</label>
+      <input id="l-pass" type="password" placeholder="Твій пароль" autocomplete="current-password">
+      <div class="msg" id="l-pass-msg">Введи пароль</div></div>
+    <button class="btn btn-primary btn-lg" onclick="doLogin(event)">Увійти</button>
+    <div class="alt-link">Забув пароль? <b onclick="resetPassword()">Відновити</b></div>
+    <div class="alt-link">Ще немає акаунта? <b onclick="go('register')">Створити</b></div>
+    <div class="alt-link" style="margin-top:8px"><b onclick="go('landing')">← На головну</b></div>
+  </div></div>
+</div>
+
+<!-- ==================== ОПЛАТА ==================== -->
+<div id="view-checkout" class="hidden">
+  <div class="center-page"><div class="panel wide">
+    <div class="panel-logo"><div class="logo-mark">A</div>Aura</div>
+    <h2>Оплата курсу</h2>
+    <p class="p-sub">Крок 2 з 2 — доступ відкриється одразу після оплати</p>
+    <div class="order">
+      <div class="order-row"><span>Курс «Aura від першого промту до агентів»</span><span>990 ₴</span></div>
+      <div class="order-row" id="disc-row"><span>Знижка на запуск</span><span>−691 ₴</span></div>
+      <div class="order-row total"><span style="color:var(--text)">До оплати</span><b id="co-total">299 ₴</b></div>
+    </div>
+    <div class="promo">
+      <input id="promo" type="text" placeholder="Промокод, якщо є">
+      <button onclick="applyPromo()">Застосувати</button>
+    </div>
+    <div class="notice" id="c-notice"></div>
+    <div class="pay-opts">
+      <button class="btn btn-dark btn-lg" onclick="doPay('apple_pay')">Apple Pay</button>
+      <button class="btn btn-ghost btn-lg" onclick="doPay('google_pay')">Google Pay</button>
+      <div class="divider">або</div>
+      <button class="btn btn-primary btn-lg" onclick="doPay('card')">Оплатити карткою</button>
+    </div>
+    <div class="pay-note">Платіж проходить через захищений шлюз. Дані картки не зберігаються на сайті.</div>
+    <div class="alt-link" style="margin-top:16px"><b onclick="go('landing')">← Повернутись</b></div>
+  </div></div>
+</div>
+
+<!-- ==================== УСПІХ ==================== -->
+<div id="view-success" class="hidden">
+  <div class="center-page"><div class="panel">
+    <div class="success-ico">✓</div>
+    <h2 id="s-title">Заявку прийнято</h2>
+    <p class="p-sub" id="s-text">Менеджер напише тобі в Telegram і надішле реквізити для оплати. Доступ відкриється одразу після зарахування платежу.</p>
+    <button class="btn btn-primary btn-lg" onclick="openTG()">Написати менеджеру</button>
+    <button class="btn btn-ghost btn-lg" style="margin-top:10px" onclick="go('cabinet')">Перевірити доступ</button>
+    <div class="alt-link" style="margin-top:14px"><b onclick="go('landing')">← На головну</b></div>
+  </div></div>
+</div>
+
+<!-- ==================== КАБІНЕТ ==================== -->
+<div id="view-cabinet" class="hidden">
+  <div class="cab-top">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="burger" id="burger" aria-label="Меню уроків"><i></i><i></i><i></i></button>
+      <div class="logo"><div class="logo-mark">A</div>Aura</div>
+    </div>
+    <div class="cab-right">
+      <a class="support" onclick="openTG()">Підтримка</a>
+      <div class="ava" id="cab-ava" title="Профіль" onclick="openProfile()">S</div>
+    </div>
+  </div>
+  <div class="app-grid">
+    <aside id="aside">
+      <div class="side-head">
+        <div class="course-name">Aura · Від першого промту<br>до власних AI-агентів</div>
+        <div class="prog-row"><span>Твій прогрес</span><b id="pct">0%</b></div>
+        <div class="bar"><i id="bar" style="width:0%"></i></div>
+        <div class="cert-hint" id="hint">Пройди всі уроки, щоб отримати сертифікат</div>
+      </div>
+      <div class="tabs">
+        <div class="tab on" data-tab="route">Маршрут</div>
+        <div class="tab" data-tab="disc">Обговорення</div>
+      </div>
+      <div class="side-scroll" id="side"></div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+    <main class="cab" id="cab-main"></main>
+  </div>
+</div>
+
+<!-- ==================== ПРОФІЛЬ ==================== -->
+<div class="modal" id="profile">
+  <div class="modal-in prof">
+    <button class="prof-x" onclick="closeProfile()" aria-label="Закрити">✕</button>
+    <div class="prof-top">
+      <div class="prof-ava" id="p-ava" onclick="document.getElementById('p-file').click()">
+        <span id="p-ava-letter">S</span>
+        <div class="prof-ava-edit">Змінити</div>
+      </div>
+      <input type="file" id="p-file" accept="image/*" hidden onchange="uploadAvatar(event)">
+      <div class="prof-who">
+        <b id="p-name">—</b>
+        <span id="p-email">—</span>
+        <i id="p-access">Доступ до курсу не відкрито</i>
+      </div>
+    </div>
+
+    <div class="notice" id="p-notice"></div>
+
+    <div class="field"><label>Нікнейм</label>
+      <input id="p-nick" type="text" placeholder="як тебе показувати в чаті" maxlength="24">
+      <div class="hintline">Літери, цифри й підкреслення. Має бути унікальним.</div>
+    </div>
+    <div class="field"><label>Дата народження</label>
+      <input id="p-bday" type="text" inputmode="numeric" placeholder="ДД.ММ.РРРР" maxlength="10" autocomplete="bday">
+      <div class="hintline">Просто набирай цифри — крапки поставляться самі</div>
+    </div>
+    <div class="field"><label>Про себе</label>
+      <textarea id="p-bio" rows="3" maxlength="300" placeholder="Чим займаєшся, що хочеш від курсу"></textarea>
+      <div class="hintline"><span id="p-bio-left">300</span> символів лишилось</div>
+    </div>
+
+    <button class="btn btn-primary btn-lg" id="p-save" onclick="saveProfile(event)">Зберегти</button>
+    <button class="btn btn-ghost" style="width:100%;margin-top:10px" onclick="logout()">Вийти з акаунта</button>
+  </div>
+</div>
+
+<!-- ==================== МОДАЛКА ==================== -->
+<div class="modal" id="modal">
+  <div class="modal-in">
+    <h3 id="modal-t"></h3>
+    <div id="modal-b"></div>
+    <button class="btn btn-primary" onclick="closeModal()">Зрозуміло</button>
+  </div>
+</div>
+
+<script>
+/* ================= ДАНІ КУРСУ ================= */
+const COURSE=[
+ {n:"01",t:"Вступний модуль",s:"2 уроки · 22 хв",
+  short:"Весь маршрут наперед і головна причина, чому в тебе не виходило",les:[
+  {t:"Що ти отримаєш із цього курсу і як його проходити",d:"10 хв",
+   desc:"Проходжу весь маршрут курсу наперед: що ти вмієш зараз і що вмітимеш через 8 годин. Плюс головне правило проходження.",
+   goals:["Побачити повну карту курсу","Зрозуміти три результати, які отримаєш","Знати, як працює кабінет і підтримка"],
+   files:[["Презентація 1: базова термінологія AI","PDF · 10 слайдів"],["Карта курсу","PDF · 1 стор"]]},
+  {t:"Чому в тебе не виходить",d:"12 хв",
+   desc:"Один і той самий запит, заданий погано і добре. Різницю видно на екрані за десять секунд.",
+   goals:["Побачити головну помилку новачків","Зрозуміти, що справа не в AI","Отримати перше швидке покращення"],files:[]}
+ ]},
+ {n:"02",t:"Claude: повний інтерфейс",s:"4 уроки · 72 хв",
+  short:"Кожна кнопка, крок за кроком. Після цього модуля інтерфейс не лякає",les:[
+  {t:"Перший вхід: реєстрація, оплата з України, ліміти",d:"16 хв",
+   desc:"Знімаємо технічний і фінансовий бар'єр: реєстрація крок за кроком, що доступно безкоштовно і де межа лімітів.",
+   goals:["Зареєструватись і зайти","Знати безкоштовні ліміти","Розуміти, коли підписка потрібна"],
+   files:[["Способи оплати з України","PDF · 2 стор"]]},
+  {t:"Головний екран: кожна кнопка, крок за кроком",d:"20 хв",
+   desc:"Проходимо по <strong>кожному елементу</strong> інтерфейсу: поле вводу, вкладення, дії під відповіддю, бічна панель, налаштування.",
+   goals:["Не боятись жодного елемента екрана","Знати, що робить кожна кнопка","Вміти редагувати запит замість переписування"],
+   files:[["Презентація 2: термінологія інтерфейсу","PDF · 12 слайдів"],["Шпаргалка по інтерфейсу","PDF · 3 стор"]]},
+  {t:"Моделі та режими: коли що вмикати",d:"18 хв",
+   desc:"Швидка модель чи розумна, коли вмикати розширене міркування, коли шукати в інтернеті. І чому не треба завжди брати найпотужніше.",
+   goals:["Свідомо обирати модель під задачу","Не витрачати ліміти дарма","Розуміти, коли потрібен пошук"],files:[]},
+  {t:"Файли, історія, пам'ять і організація чатів",d:"18 хв",
+   desc:"Наводимо порядок: завантаження документів, як працює пам'ять, як почистити те, що система про тебе знає.",
+   goals:["Працювати зі своїми файлами","Керувати пам'яттю","Організувати чати так, щоб знаходити"],files:[]}
+ ]},
+ {n:"03",t:"Промпти: від запиту до результату",s:"4 уроки · 63 хв",
+  short:"Формула, після якої відповіді перестають бути водою",les:[
+  {t:"Анатомія робочого промпту: 5 елементів",d:"18 хв",
+   desc:"Роль, задача, контекст, формат, обмеження. Збираємо промпт на екрані по частинах — і бачимо покращення на кожному кроці.",
+   goals:["Отримати формулу, що працює завжди","Збирати промпт за 30 секунд"],
+   files:[["Шаблон робочого промпту","PDF · 1 стор"]]},
+  {t:"Як прибрати воду з відповідей",d:"15 хв",
+   desc:"Чотири прийоми проти загальних формулювань: конкретика, заборони, приклади, жорсткий ліміт.",
+   goals:["Позбутись води назавжди","Отримувати готовий до використання результат"],files:[]},
+  {t:"Роль, контекст і якість результату",d:"16 хв",
+   desc:"Як дати приклади свого стилю, як задати роль і як підвантажити файли, щоб AI писав як ти, а не як шаблон.",
+   goals:["Навчити AI свого стилю","Працювати з власними матеріалами"],files:[]},
+  {t:"Промпт, запит і промпт-інструкція: у чому різниця",d:"14 хв",
+   desc:"Перша сходинка вгору: разовий запит vs інструкція, яка працює постійно. Звідси починається шлях до агентів.",
+   goals:["Розрізняти запит і інструкцію","Писати інструкції багаторазового використання"],
+   files:[["Презентація 3: термінологія промптингу","PDF · 10 слайдів"],["100 готових промптів","PDF · 24 стор"]]}
+ ]},
+ {n:"04",t:"Проєкти в Claude",s:"4 уроки · 70 хв",
+  short:"Перестаєш пояснювати контекст щоразу. Фактично твій перший агент",les:[
+  {t:"Що таке Проєкт і навіщо він потрібен",d:"16 хв",
+   desc:"Найнедооціненіша функція. Створюєш проєкт один раз — і більше не пояснюєш контекст щоразу заново.",
+   goals:["Створити свій перший проєкт","Розуміти, коли проєкт, а коли звичайний чат"],files:[]},
+  {t:"Структура проєкту: файли, дані, база знань",d:"18 хв",
+   desc:"Що завантажувати в проєкт, як організувати матеріали і чому структура важливіша за обсяг.",
+   goals:["Зібрати базу знань під свою задачу","Не перевантажувати проєкт зайвим"],files:[]},
+  {t:"Системна інструкція проєкту",d:"18 хв",
+   desc:"Серце проєкту. Хто ти, що робиш, як робиш, чого <strong>ніколи</strong> не робиш. Пишемо на екрані по блоках.",
+   goals:["Написати робочу системну інструкцію","Розуміти, чому заборони важливіші за вказівки"],
+   files:[["Презентація 4: архітектура проєкту","PDF · 8 слайдів"],["Шаблон системної інструкції","PDF · 2 стор"]]},
+  {t:"Артефакти і практика: складаємо перший проєкт",d:"18 хв",
+   desc:"Збираємо повноцінний робочий проєкт від нуля. Це вже фактично простий агент — просто ми поки не називаємо це так.",
+   goals:["Мати працюючий проєкт під свою задачу","Вміти доопрацьовувати його далі"],files:[]}
+ ]},
+ {n:"05",t:"Щоденна робота і документи",s:"4 уроки · 65 хв",
+  short:"Тут курс окупається: тексти, договори, таблиці, перевірка фактів",les:[
+  {t:"Тексти й комунікація: листи, пости, складні відповіді",d:"17 хв",
+   desc:"П'ять типів текстів, які ти пишеш щотижня — кожен за дві хвилини замість двадцяти.",
+   goals:["Економити 2–3 години на тиждень","Не писати на емоціях складні відповіді"],
+   files:[["Шаблони текстів","PDF · 8 стор"]]},
+  {t:"Документи, PDF і довгі тексти",d:"16 хв",
+   desc:"Договір на сорок сторінок: витягуємо головне, ставимо питання, порівнюємо документи.",
+   goals:["Розбирати документи за хвилини","Ставити питання до тексту"],files:[]},
+  {t:"Перевірка результату: як не отримати вигадку",d:"16 хв",
+   desc:"Показую, як AI впевнено вигадує факти — і як це ловити. Найважливіший урок з точки зору безпеки.",
+   goals:["Розпізнавати вигадані факти","Знати правило трьох рівнів перевірки"],files:[]},
+  {t:"Таблиці, цифри та аналіз без Excel",d:"16 хв",
+   desc:"Завантажуємо таблицю — отримуємо аналіз, графіки й висновки. Без навичок Excel.",
+   goals:["Аналізувати дані без спецнавичок","Знаходити аномалії в цифрах"],files:[]}
+ ]},
+ {n:"06",t:"Контент: Claude як режисер",s:"2 уроки · 36 хв",
+  short:"Claude не малює — він керує. Опис, задача, оцінка результату",les:[
+  {t:"Зображення й дизайн: Claude пише опис, інструмент малює",d:"18 хв",
+   desc:"Claude не малює — і це метод, а не проблема. Він працює як режисер: пише точний опис, ставить задачу, оцінює результат.",
+   goals:["Отримувати зображення професійного рівня","Керувати процесом, а не тицяти кнопки"],
+   files:[["30 шаблонів опису зображень","PDF · 10 стор"]]},
+  {t:"Відео, голос і транскрибація",d:"18 хв",
+   desc:"Сценарії роликів, озвучка, субтитри і найкорисніше — розшифровка зустрічей із витягом задач.",
+   goals:["Робити відеоконтент без зйомки","Перетворювати наради на список задач"],files:[]}
+ ]},
+ {n:"07",t:"Від проєктів до агентів",s:"4 уроки · 61 хв",
+  short:"Точка переходу: чому проєктів мало і що таке агент насправді",les:[
+  {t:"Чому проєктів недостатньо",d:"14 хв",
+   desc:"Точка переходу. Ти вже вмієш багато — тепер показую стелю цього підходу і двері далі.",
+   goals:["Побачити межу можливостей проєктів","Зрозуміти, навіщо потрібні агенти"],files:[]},
+  {t:"Що таке агент насправді: три рівні, без хайпу",d:"16 хв",
+   desc:"Чесно: чим агент відрізняється від бота й від автоматизації. З чого складається і де це маркетинг.",
+   goals:["Розуміти тему краще за більшість","Відрізняти реальність від обіцянок"],
+   files:[["Презентація 5: агентська термінологія","PDF · 10 слайдів"]]},
+  {t:"Конструктори агентів без коду: огляд і вибір",d:"16 хв",
+   desc:"Платформи для збірки агентів, порівняння за складністю й ціною. Що обрати новачку.",
+   goals:["Обрати платформу","Знати вартість запуску й утримання"],
+   files:[["Порівняння конструкторів","PDF · 4 стор"]]},
+  {t:"Карта задач: що делегувати агенту у своїй справі",d:"15 хв",
+   desc:"Виписуємо всі повторювані задачі й позначаємо, що можна віддати. Далі працюємо саме по цій карті.",
+   goals:["Мати карту задач своєї справи","Знати, з чого починати автоматизацію"],
+   files:[["Шаблон карти задач","XLSX"]]}
+ ]},
+ {n:"08",t:"Агенти для бізнесу",s:"3 уроки · 56 хв",
+  short:"Головний модуль. Збираєш агента, який відповідає клієнтам у Telegram",les:[
+  {t:"Агент №1: підтримка клієнтів у Telegram",d:"20 хв",
+   desc:"Збираємо <strong>працюючого агента від нуля</strong>: база знань, інструкція, підключення до Telegram, тестування, передача складних випадків людині.",
+   goals:["Запустити власного агента","Написати інструкцію з чіткими межами","Налаштувати передачу людині"],
+   files:[["Робочий зошит: агент підтримки","DOCX · 12 стор"],["Шаблон інструкції агента","PDF · 3 стор"]]},
+  {t:"Агент №2: обробка заявок і робота з даними",d:"18 хв",
+   desc:"Агент приймає заявку у вільній формі, витягує дані, записує в таблицю, відповідає клієнту й повідомляє тебе.",
+   goals:["Вбудувати агента в реальний процес","Автоматизувати обробку заявок"],files:[]},
+  {t:"Економіка, ризики та безпека даних",d:"18 хв",
+   desc:"Скільки коштує агент на місяць, де ламається, чого йому не можна довіряти і що робити з персональними даними клієнтів.",
+   goals:["Рахувати вартість утримання","Знати межі й ризики","Не порушити закон про дані"],
+   files:[["Калькулятор вартості агента","XLSX"],["Чек-лист безпеки даних","PDF · 2 стор"]]}
+ ]},
+ {n:"09",t:"Маркетинг і системи бізнесу",s:"4 уроки · 68 хв",
+  short:"Фініш: маркетинг, продажі й твоя власна система з агентів",les:[
+  {t:"Marketing agent: дослідження аудиторії та контент-план",d:"18 хв",
+   desc:"Агент, який щотижня видає контент-план на основі твоєї аудиторії, продукту й конкурентів.",
+   goals:["Мати автоматичний контент-план","Розуміти свою аудиторію глибше"],files:[]},
+  {t:"Тон бренду, райтинг і креативи",d:"17 хв",
+   desc:"Навчаємо агента писати твоїм голосом. Варіанти подачі, заголовки, креативи під різні майданчики.",
+   goals:["Зафіксувати тон бренду","Отримувати тексти в своєму стилі"],files:[]},
+  {t:"Sales agent: кваліфікація лідів і скрипти",d:"17 хв",
+   desc:"Агент, який спілкується з лідом, кваліфікує його й передає тобі готових до розмови.",
+   goals:["Не витрачати час на нецільових","Мати скрипти під заперечення"],files:[]},
+  {t:"Твоя система: як усе працює разом + сертифікат",d:"16 хв",
+   desc:"Збираємо все в одну картину. Як агенти пов'язані між собою і що робити далі, щоб не відстати.",
+   goals:["Мати цілісну AI-систему","Отримати сертифікат","Приєднатись до живих ефірів"],
+   files:[["Презентація 6: карта системи бізнесу","PDF · 8 слайдів"]]}
+ ]}
+];
+
+/* ================= СТАН ================= */
+const FLAT=[]; COURSE.forEach((m,mi)=>m.les.forEach((l,li)=>FLAT.push({...l,mi,li,mod:m.t,mn:m.n})));
+const done=new Set();
+let cur=0, openMod=0, user=null, profile=null, paid=false, total=PRICE, sideTab='route';
+
+/* ================= РОУТЕР ================= */
+const VIEWS=['landing','register','login','checkout','success','cabinet'];
+async function go(v){
+  if(v==='cabinet'){
+    if(!user){ v='login'; }
+    else { await refreshAccess(); if(!paid) v='checkout'; }
+  }
+  if((v==='register'||v==='login')&&user) v = paid ? 'cabinet' : 'checkout';
+  if(v==='checkout'&&!user) v='register';
+
+  VIEWS.forEach(x=>document.getElementById('view-'+x).classList.add('hidden'));
+  document.getElementById('view-'+v).classList.remove('hidden');
+  document.body.style.overflow = (v==='cabinet') ? 'hidden' : '';
+  window.scrollTo(0,0);
+  if(v==='cabinet'){ sideTab='route'; renderSide(); renderMain(); updateProg(); closeSide(); }
+  if(v==='landing') requestAnimationFrame(buildRoad);
+}
+
+/* ================= МОДАЛКА ================= */
+const DOCS={
+  offer:{t:'Договір публічної оферти',b:`<p>Тут буде повний текст договору оферти. Його потрібно підготувати до запуску — це вимога платіжних систем.</p>
+    <p>Мінімум, що має бути: предмет договору, вартість і порядок оплати, умови надання доступу, порядок повернення коштів, реквізити ФОП.</p>`},
+  privacy:{t:'Політика конфіденційності',b:`<p>Тут буде політика обробки персональних даних.</p>
+    <p>Має описувати: які дані збираємо (ім'я, email, телефон), навіщо, як зберігаємо, кому передаємо (платіжний шлюз), і як користувач може вимагати видалення.</p>`}
+};
+function openDoc(k){
+  document.getElementById('modal-t').textContent=DOCS[k].t;
+  document.getElementById('modal-b').innerHTML=DOCS[k].b;
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on')}
+document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+function openTG(){window.open(TG_SUPPORT,'_blank','noopener')}
+
+/* ================= ФОРМИ ================= */
+function fail(id,on){
+  document.getElementById(id).classList.toggle('err',on);
+  document.getElementById(id+'-msg').classList.toggle('show',on);
+  return !on;
+}
+function notice(id,type,text){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.className='notice show '+type; el.textContent=text;
+}
+function clearNotice(id){const el=document.getElementById(id); if(el)el.className='notice'}
+function busy(btn,on){btn.classList.toggle('loading',on)}
+
+/* переклад помилок Supabase людською мовою */
+function humanError(msg=''){
+  const m=msg.toLowerCase();
+  if(m.includes('already registered')||m.includes('already been registered'))
+    return 'Такий email вже зареєстрований. Спробуй увійти.';
+  if(m.includes('invalid login credentials')) return 'Невірний email або пароль.';
+  if(m.includes('email not confirmed')) return 'Підтверди пошту — лист уже надіслано.';
+  if(m.includes('password')&&m.includes('6')) return 'Пароль має бути щонайменше 6 символів.';
+  if(m.includes('provider is not enabled')) return 'Вхід через Google ще не увімкнено. Скористайся поштою або напиши в підтримку.';
+  if(m.includes('rate limit')||m.includes('too many')) return 'Забагато спроб. Спробуй за хвилину.';
+  if(m.includes('failed to fetch')) return 'Немає зв’язку з сервером. Перевір інтернет.';
+  return msg || 'Щось пішло не так. Спробуй ще раз.';
+}
+
+async function doRegister(ev){
+  clearNotice('r-notice');
+  const n=document.getElementById('r-name').value.trim();
+  const e=document.getElementById('r-email').value.trim();
+  const p=document.getElementById('r-phone').value.trim();
+  const w=document.getElementById('r-pass').value;
+  let ok=true;
+  ok=fail('r-name',n.length<2)&&ok;
+  ok=fail('r-email',!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e))&&ok;
+  ok=fail('r-phone',p.replace(/\D/g,'').length<9)&&ok;
+  ok=fail('r-pass',w.length<6)&&ok;
+  if(!ok)return;
+
+  const btn=ev&&ev.target; if(btn)busy(btn,true);
+  const {data,error}=await sb.auth.signUp({
+    email:e, password:w,
+    options:{data:{full_name:n, phone:p}, emailRedirectTo:location.origin+location.pathname}
+  });
+  if(btn)busy(btn,false);
+
+  if(error){ notice('r-notice','err',humanError(error.message)); return; }
+
+  if(!data.session){
+    notice('r-notice','ok','Акаунт створено. Ми надіслали лист на '+e+' — підтверди пошту й повертайся.');
+    return;
+  }
+  await loadUser();
+  go('checkout');
+}
+
+async function doLogin(ev){
+  clearNotice('l-notice');
+  const e=document.getElementById('l-email').value.trim();
+  const w=document.getElementById('l-pass').value;
+  let ok=true;
+  ok=fail('l-email',!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e))&&ok;
+  ok=fail('l-pass',w.length<1)&&ok;
+  if(!ok)return;
+
+  const btn=ev&&ev.target; if(btn)busy(btn,true);
+  const {error}=await sb.auth.signInWithPassword({email:e,password:w});
+  if(btn)busy(btn,false);
+  if(error){ notice('l-notice','err',humanError(error.message)); return; }
+
+  await loadUser();
+  go(paid?'cabinet':'checkout');
+}
+
+async function oauth(provider){
+  const box = document.getElementById('view-register').classList.contains('hidden') ? 'l-notice' : 'r-notice';
+  clearNotice(box);
+  const {error}=await sb.auth.signInWithOAuth({
+    provider, options:{redirectTo:location.origin+location.pathname}
+  });
+  if(error) notice(box,'err',humanError(error.message));
+}
+
+async function resetPassword(){
+  const e=document.getElementById('l-email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)){
+    notice('l-notice','info','Спочатку введи свій email у поле вище — надішлемо лист для відновлення.'); return;
+  }
+  const {error}=await sb.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});
+  notice('l-notice', error?'err':'ok',
+    error?humanError(error.message):'Лист для відновлення пароля надіслано на '+e);
+}
+
+/* ================= КОРИСТУВАЧ І ДОСТУП ================= */
+async function loadUser(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ user=null; profile=null; paid=false; done.clear(); updateAuthUI(); return null; }
+  const u=session.user;
+  const meta=u.user_metadata||{};
+  user={id:u.id, email:u.email,
+        name:meta.full_name||meta.name||u.email.split('@')[0],
+        phone:meta.phone||'',
+        picture:meta.avatar_url||meta.picture||''};
+
+  const {data:p}=await sb.from('profiles').select('*').eq('id',u.id).maybeSingle();
+  profile=p||{};
+
+  await refreshAccess();
+  if(paid) await loadProgress();
+  updateAuthUI();
+  return user;
+}
+
+/* ім'я та аватар у всіх місцях одразу */
+function displayName(){
+  return (profile&&profile.nickname) || (user&&user.name) || 'S';
+}
+function avatarUrl(){
+  return (profile&&profile.avatar_url) || (user&&user.picture) || '';
+}
+function paintAvatar(el){
+  if(!el) return;
+  const url=avatarUrl(), letter=(displayName()[0]||'S').toUpperCase();
+  el.textContent=letter;
+  el.style.backgroundImage = url ? `url("${url}")` : '';
+  el.style.color = url ? 'transparent' : '';
+  el.style.backgroundSize='cover';
+  el.style.backgroundPosition='center';
+}
+function updateAuthUI(){
+  const inn=!!user;
+  const set=(id,hide)=>{const e=document.getElementById(id); if(e)e.classList.toggle('hidden',hide)};
+  set('nav-login',inn); set('nav-buy',inn); set('nav-cab',!inn); set('nav-ava',!inn);
+  paintAvatar(document.getElementById('nav-ava'));
+  paintAvatar(document.getElementById('cab-ava'));
+}
+
+async function refreshAccess(){
+  if(!user){ paid=false; return; }
+  const {data,error}=await sb.from('purchases')
+    .select('id').eq('status','paid').limit(1);
+  paid = !error && !!data && data.length>0;
+}
+
+async function loadProgress(){
+  done.clear();
+  const {data}=await sb.from('lesson_progress').select('lesson_key');
+  (data||[]).forEach(r=>done.add(r.lesson_key));
+}
+function applyPromo(){
+  const c=document.getElementById('promo').value.trim().toUpperCase();
+  if(c==='START'){ total=249; document.getElementById('disc-row').innerHTML=
+    '<span>Знижка на запуск + промокод</span><span>−741 ₴</span>'; }
+  else if(c){ openDocMsg('Промокод не знайдено','Перевір, чи правильно введено код. Якщо він має працювати — напиши в підтримку '+TG_NICK+'.'); return; }
+  document.getElementById('co-total').textContent=total+' ₴';
+}
+function openDocMsg(t,b){
+  document.getElementById('modal-t').textContent=t;
+  document.getElementById('modal-b').innerHTML='<p>'+b+'</p>';
+  document.getElementById('modal').classList.add('on');
+}
+async function doPay(method){
+  clearNotice('c-notice');
+  if(!user){ go('register'); return; }
+
+  const ref='SP-'+Date.now().toString(36).toUpperCase()+'-'+user.id.slice(0,6);
+  const {error}=await sb.from('purchases').insert({
+    user_id:user.id, amount_uah:total, status:'pending',
+    provider:method, order_reference:ref
+  });
+  if(error){ notice('c-notice','err',humanError(error.message)); return; }
+
+  document.getElementById('s-text').textContent=
+    'Номер замовлення '+ref+'. Менеджер напише тобі в Telegram і надішле реквізити. Доступ відкриється одразу після зарахування платежу.';
+  go('success');
+}
+
+/* ================= ПРОФІЛЬ ================= */
+function openProfile(){
+  if(!user){ go('login'); return; }
+  clearNotice('p-notice');
+  document.getElementById('p-name').textContent = displayName();
+  document.getElementById('p-email').textContent = user.email;
+
+  const acc=document.getElementById('p-access');
+  acc.textContent = paid ? 'Доступ до курсу відкрито' : 'Доступ до курсу не відкрито';
+  acc.classList.toggle('ok', paid);
+
+  const av=document.getElementById('p-ava'), url=avatarUrl();
+  document.getElementById('p-ava-letter').textContent=(displayName()[0]||'S').toUpperCase();
+  av.classList.toggle('has-img', !!url);
+  av.style.backgroundImage = url ? `url("${url}")` : '';
+
+  document.getElementById('p-nick').value = profile.nickname || '';
+  document.getElementById('p-bday').value = isoToUa(profile.birth_date);
+  document.getElementById('p-bio').value  = profile.bio || '';
+  countBio();
+
+  document.getElementById('profile').classList.add('on');
+}
+function closeProfile(){ document.getElementById('profile').classList.remove('on') }
+document.getElementById('profile').onclick=e=>{ if(e.target.id==='profile') closeProfile() };
+
+function countBio(){
+  const v=document.getElementById('p-bio').value.length;
+  document.getElementById('p-bio-left').textContent=300-v;
+}
+document.getElementById('p-bio').addEventListener('input',countBio);
+
+/* дата вводиться з клавіатури: 01011990 → 01.01.1990 */
+function isoToUa(iso){
+  if(!iso) return '';
+  const [y,m,d]=iso.split('-');
+  return `${d}.${m}.${y}`;
+}
+function uaToIso(s){
+  const m=s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+  if(!m) return null;
+  const [,d,mo,y]=m;
+  const dt=new Date(`${y}-${mo}-${d}T00:00:00`);
+  if(isNaN(dt) || dt.getDate()!=+d || dt.getMonth()+1!=+mo) return null;
+  return `${y}-${mo}-${d}`;
+}
+const bdayEl=document.getElementById('p-bday');
+bdayEl.addEventListener('input',e=>{
+  const before=e.target.value, pos=e.target.selectionStart;
+  let v=before.replace(/\D/g,'').slice(0,8);
+  let out=v;
+  if(v.length>4) out=v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4);
+  else if(v.length>2) out=v.slice(0,2)+'.'+v.slice(2);
+  e.target.value=out;
+  // курсор лишається на місці при правках усередині
+  if(pos<before.length) e.target.setSelectionRange(pos,pos);
+});
+bdayEl.addEventListener('keydown',e=>{
+  if(e.key==='Backspace'){
+    const v=e.target.value;
+    if(v.endsWith('.') && e.target.selectionStart===v.length){
+      e.preventDefault(); e.target.value=v.slice(0,-1);
+    }
+  }
+});
+
+async function saveProfile(ev){
+  const btn=ev&&ev.currentTarget; if(btn)busy(btn,true);
+  clearNotice('p-notice');
+
+  const nick=document.getElementById('p-nick').value.trim();
+  const bdayRaw=document.getElementById('p-bday').value.trim();
+  const bio =document.getElementById('p-bio').value.trim();
+
+  if(nick && !/^[A-Za-zА-Яа-яЄєІіЇїҐґ0-9_]{2,24}$/.test(nick)){
+    if(btn)busy(btn,false);
+    notice('p-notice','err','Нікнейм: 2–24 символи, лише літери, цифри й підкреслення.'); return;
+  }
+
+  let bday=null;
+  if(bdayRaw){
+    bday=uaToIso(bdayRaw);
+    if(!bday){
+      if(btn)busy(btn,false);
+      notice('p-notice','err','Дата у форматі ДД.ММ.РРРР, наприклад 07.03.1998.'); return;
+    }
+    const y=+bday.slice(0,4);
+    if(y<1920 || new Date(bday)>new Date()){
+      if(btn)busy(btn,false);
+      notice('p-notice','err','Перевір дату народження — вона виглядає неправильною.'); return;
+    }
+  }
+
+  const {error}=await sb.from('profiles').update({
+    nickname: nick || null,
+    birth_date: bday,
+    bio: bio || null,
+    updated_at: new Date().toISOString()
+  }).eq('id',user.id);
+  if(btn)busy(btn,false);
+
+  if(error){
+    const dup=/duplicate|unique/i.test(error.message);
+    notice('p-notice','err', dup ? 'Такий нікнейм уже зайнятий, обери інший.' : humanError(error.message));
+    return;
+  }
+  profile.nickname=nick||null; profile.birth_date=bday; profile.bio=bio||null;
+  document.getElementById('p-name').textContent=displayName();
+  updateAuthUI();
+  notice('p-notice','ok','Збережено');
+}
+
+async function uploadAvatar(ev){
+  const file=ev.target.files&&ev.target.files[0];
+  if(!file) return;
+  clearNotice('p-notice');
+  if(!file.type.startsWith('image/')){ notice('p-notice','err','Це не зображення.'); return; }
+  if(file.size>2*1024*1024){ notice('p-notice','err','Файл завеликий — максимум 2 МБ.'); return; }
+
+  notice('p-notice','info','Завантажую…');
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path=`${user.id}/avatar.${ext}`;
+
+  const {error:upErr}=await sb.storage.from('avatars')
+    .upload(path,file,{upsert:true,cacheControl:'0'});
+  if(upErr){ notice('p-notice','err',humanError(upErr.message)); return; }
+
+  const {data:pub}=sb.storage.from('avatars').getPublicUrl(path);
+  const url=pub.publicUrl+'?v='+Date.now();
+
+  const {error}=await sb.from('profiles').update({avatar_url:url}).eq('id',user.id);
+  if(error){ notice('p-notice','err',humanError(error.message)); return; }
+
+  profile.avatar_url=url;
+  const av=document.getElementById('p-ava');
+  av.classList.add('has-img'); av.style.backgroundImage=`url("${url}")`;
+  updateAuthUI();
+  notice('p-notice','ok','Аватарку оновлено');
+  ev.target.value='';
+}
+
+async function logout(){
+  if(!confirm('Вийти з акаунта?')) return;
+
+  // 1. просимо сервер завершити сесію; помилка тут не має блокувати вихід
+  try{ await sb.auth.signOut({scope:'global'}); }
+  catch(e){ try{ await sb.auth.signOut({scope:'local'}); }catch(_){} }
+
+  // 2. підчищаємо збережену сесію вручну — на випадок, якщо signOut не спрацював
+  try{
+    Object.keys(localStorage)
+      .filter(k=>k.startsWith('sb-')||k.includes('supabase'))
+      .forEach(k=>localStorage.removeItem(k));
+    Object.keys(sessionStorage)
+      .filter(k=>k.startsWith('sb-')||k.includes('supabase'))
+      .forEach(k=>sessionStorage.removeItem(k));
+  }catch(_){}
+
+  // 3. перезавантажуємо сторінку з чистого стану — гарантія, що нічого не лишилось
+  user=null; profile=null; paid=false; done.clear();
+  closeProfile();
+  location.replace(location.pathname);
+}
+
+/* ================= 3D ДОРОГА ================= */
+function buildRoad(){
+  const host=document.getElementById('road');
+  if(!host) return;
+  const mobile = window.innerWidth < 860;
+  const N=COURSE.length;
+
+  if(mobile){
+    host.innerHTML='<div class="road-m">'+COURSE.map(m=>`
+      <div class="rm"><div class="rm-in">
+        <div class="rc-num">Модуль ${m.n}</div>
+        <h3>${m.t}</h3><p>${m.short}</p>
+        <p style="margin-top:7px;color:var(--blue);font-weight:700">${m.s}</p>
+      </div></div>`).join('')+'</div>';
+    return;
+  }
+
+  const W=1000, H=2640, AMP=250, FREQ=1.25;
+
+  // огинаюча: амплітуда плавно наростає й гасне — дорога виходить і завершується по центру
+  const env=t=>Math.pow(Math.sin(Math.PI*t),.72);
+  const fx=t=>500+AMP*env(t)*Math.sin(2*Math.PI*FREQ*t);
+  const fy=t=>70+t*(H-140);
+  const halfW=t=>14+42*t;                    // звужена вгорі, широка внизу = перспектива
+
+  // опорні точки — небагато, згладжування зробить криві
+  const SAMP=54, L=[], R=[], C=[];
+  for(let i=0;i<=SAMP;i++){
+    const t=i/SAMP, x=fx(t), y=fy(t), w=halfW(t);
+    const h=1/(SAMP*4);
+    const t0=Math.max(0,t-h), t1=Math.min(1,t+h);
+    const dx=fx(t1)-fx(t0), dy=fy(t1)-fy(t0);
+    const len=Math.hypot(dx,dy)||1;
+    const nx=-dy/len, ny=dx/len;
+    L.push([x+nx*w, y+ny*w]); R.push([x-nx*w, y-ny*w]); C.push([x,y]);
+  }
+
+  // Catmull-Rom → кубічні Безьє: ідеально гладка крива без зламів
+  const smooth=p=>{
+    let d=`M ${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+    for(let i=0;i<p.length-1;i++){
+      const a=p[i-1]||p[i], b=p[i], c=p[i+1], e=p[i+2]||c;
+      d+=` C ${(b[0]+(c[0]-a[0])/6).toFixed(1)} ${(b[1]+(c[1]-a[1])/6).toFixed(1)},`
+       +  ` ${(c[0]-(e[0]-b[0])/6).toFixed(1)} ${(c[1]-(e[1]-b[1])/6).toFixed(1)},`
+       +  ` ${c[0].toFixed(1)} ${c[1].toFixed(1)}`;
+    }
+    return d;
+  };
+  const tail=d=>d.replace(/^M\s*[-\d.]+\s+[-\d.]+/,'');
+
+  const Rr=R.slice().reverse();
+  const poly=smooth(L)+` L ${Rr[0][0].toFixed(1)} ${Rr[0][1].toFixed(1)}`+tail(smooth(Rr))+' Z';
+  const centre=smooth(C);
+
+  // каркас: дорога + невидима осьова лінія, з якої беремо довжину й точки
+  host.innerHTML=`
+  <svg id="roadSvg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+    <defs>
+      <linearGradient id="gRoad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#A8BEFF"/><stop offset="42%" stop-color="#3E64FF"/>
+        <stop offset="100%" stop-color="#122A96"/>
+      </linearGradient>
+      <linearGradient id="gEdge" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#D6E0FF"/><stop offset="100%" stop-color="#7E97FF"/>
+      </linearGradient>
+      <filter id="soft" x="-30%" y="-10%" width="160%" height="130%">
+        <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#1B36C4" flood-opacity=".18"/>
+      </filter>
+    </defs>
+    <path id="roadLine" d="${centre}" fill="none" stroke="none"/>
+    <path d="${poly}" fill="url(#gRoad)" filter="url(#soft)"/>
+    <path d="${poly}" fill="none" stroke="url(#gEdge)" stroke-width="2.5" opacity=".85"/>
+    <path d="${centre}" fill="none" stroke="#fff" stroke-width="3.6" stroke-opacity=".6"
+          stroke-linecap="round" stroke-dasharray="22 30"/>
+    <g id="roadNodes"></g>
+  </svg>
+  <div class="road-cards" id="roadCards"></div>`;
+
+  // позиції модулів рахуємо ВЗДОВЖ ДОВЖИНИ шляху, а не по координаті Y
+  const line=document.getElementById('roadLine');
+  const TOTAL=line.getTotalLength();
+  const marks=COURSE.map((m,i)=>{
+    const s=((i+.55)/N)*TOTAL;
+    const p=line.getPointAtLength(s);
+    return {x:p.x,y:p.y,m,i,tt:s/TOTAL};
+  });
+
+  document.getElementById('roadNodes').innerHTML=marks.map(n=>`
+    <g class="rnode">
+      <circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${(17+6*n.tt).toFixed(1)}"
+              fill="#fff" stroke="#2B54F5" stroke-width="${(4+1.6*n.tt).toFixed(1)}"/>
+      <text x="${n.x.toFixed(1)}" y="${(n.y+5.5+2*n.tt).toFixed(1)}" text-anchor="middle"
+            font-family="Manrope,sans-serif" font-weight="800"
+            font-size="${(13+4*n.tt).toFixed(1)}" fill="#2B54F5">${n.i+1}</text>
+    </g>`).join('');
+
+  document.getElementById('roadCards').innerHTML=marks.map(n=>`
+    <div class="rc ${n.x<500?'right':'left'}"
+         style="left:${(n.x/W*100).toFixed(2)}%;top:${(n.y/H*100).toFixed(2)}%">
+      <div class="rc-in">
+        <div class="rc-num">Модуль ${n.m.n}</div>
+        <h3>${n.m.t}</h3>
+        <p>${n.m.short}</p>
+        <p style="margin-top:7px;color:var(--blue);font-weight:700;font-size:12.5px">${n.m.s}</p>
+      </div>
+    </div>`).join('');
+}
+
+/* ================= КАБІНЕТ ================= */
+function renderSide(){
+  const box=document.getElementById('side');
+  if(sideTab==='disc'){
+    box.innerHTML=`<div class="disc"><div class="disc-box">
+      <h4>Обговорення в Telegram</h4>
+      <p>Питання по уроках, розбори й спілкування з іншими учнями — у закритому чаті. Менеджер ${TG_NICK} відповідає протягом дня.</p>
+      <button class="btn btn-primary" onclick="openTG()">Відкрити чат</button>
+    </div></div>`;
+    return;
+  }
+  box.innerHTML=COURSE.map((m,mi)=>{
+    const dn=m.les.filter((_,li)=>done.has(mi+'-'+li)).length;
+    return `<div class="m ${openMod===mi?'open':''}" data-m="${mi}">
+      <div class="m-head"><div class="m-num">${m.n}</div>
+        <div class="m-t"><b>${m.t}</b><span>${m.s}${dn?' · '+dn+' пройдено':''}</span></div>
+        <div class="chev">▶</div></div>
+      <div class="m-list">${m.les.map((l,li)=>{
+        const fi=FLAT.findIndex(f=>f.mi===mi&&f.li===li);
+        return `<div class="les ${fi===cur?'active':''} ${done.has(mi+'-'+li)?'done':''}" data-i="${fi}">
+          <div class="ico">▶</div><div class="les-t"><b>${l.t}</b><span>${l.d}</span></div>
+          <div class="tick">✓</div></div>`}).join('')}</div></div>`}).join('');
+  box.querySelectorAll('.m-head').forEach(h=>h.onclick=()=>{
+    const mi=+h.parentElement.dataset.m; openMod=openMod===mi?-1:mi; renderSide()});
+  box.querySelectorAll('.les').forEach(el=>el.onclick=()=>{
+    cur=+el.dataset.i; openMod=FLAT[cur].mi; renderSide(); renderMain();
+    document.getElementById('cab-main').scrollTop=0; closeSide()});
+}
+
+function renderMain(){
+  const l=FLAT[cur], isDone=done.has(l.mi+'-'+l.li);
+  document.getElementById('cab-main').innerHTML=`
+    <div class="crumb">Модуль ${l.mn} · <b>${l.mod}</b> · урок ${l.li+1} з ${COURSE[l.mi].les.length}</div>
+    <h1>${l.t}</h1>
+    <div class="player" id="player"><button class="play" id="playBtn" aria-label="Відтворити">▶</button>
+      <div class="p-meta">${l.d} · 1080p</div></div>
+    <div class="act">
+      <button class="btn btn-primary" id="mark" ${isDone?'style="background:var(--blue-soft);color:var(--blue);box-shadow:none"':''}>${isDone?'✓ Урок пройдено':'Позначити як пройдений'}</button>
+      <button class="btn btn-ghost" id="prev" ${cur===0?'disabled':''}>← Попередній</button>
+      <button class="btn btn-ghost" id="next" ${cur===FLAT.length-1?'disabled':''}>Наступний →</button>
+    </div>
+    <div class="blk"><h2>Про урок</h2><p class="desc">${l.desc}</p></div>
+    <div class="blk"><h2>Що ти вмітимеш після</h2>
+      <ul class="goals">${l.goals.map(g=>`<li>${g}</li>`).join('')}</ul></div>
+    ${l.files.length?`<div class="blk"><h2>Матеріали уроку</h2><div class="files">${
+      l.files.map(f=>`<div class="file" onclick="dl('${f[0].replace(/'/g,"")}')"><div class="f-ico">${
+        f[1].includes('XLSX')?'X':f[1].includes('DOCX')?'W':f[0].includes('Презентація')?'P':'F'}</div>
+        <div><b>${f[0]}</b><span>${f[1]} · завантажити</span></div></div>`).join('')}</div></div>`:''}
+    <div class="nav-b">
+      <button class="btn btn-ghost" id="prev2" ${cur===0?'disabled':''}>← Попередній урок</button>
+      <button class="btn btn-ghost" id="next2" ${cur===FLAT.length-1?'disabled':''}>Наступний урок →</button>
+    </div>`;
+
+  document.getElementById('playBtn').onclick=()=>{
+    document.getElementById('player').insertAdjacentHTML('beforeend',
+      '<div class="p-msg">Тут буде відеоплеєр.<br>Підключається після завантаження уроків на хостинг.</div>');
+  };
+  document.getElementById('mark').onclick=async(ev)=>{
+    const k=l.mi+'-'+l.li;
+    const btn=ev.currentTarget; busy(btn,true);
+    if(done.has(k)){
+      done.delete(k);
+      await sb.from('lesson_progress').delete().eq('lesson_key',k);
+    }else{
+      done.add(k);
+      await sb.from('lesson_progress').upsert({user_id:user.id, lesson_key:k});
+    }
+    renderSide(); renderMain(); updateProg();
+  };
+  const goL=d=>{cur=Math.min(FLAT.length-1,Math.max(0,cur+d));openMod=FLAT[cur].mi;
+    renderSide();renderMain();document.getElementById('cab-main').scrollTop=0};
+  ['prev','prev2'].forEach(id=>{const b=document.getElementById(id); if(b)b.onclick=()=>goL(-1)});
+  ['next','next2'].forEach(id=>{const b=document.getElementById(id); if(b)b.onclick=()=>goL(1)});
+}
+function dl(name){ openDocMsg('Матеріал: '+name,'Файл буде доступний для завантаження після завершення курсу. Якщо він потрібен зараз — напиши в підтримку '+TG_NICK+'.') }
+
+function updateProg(){
+  const p=Math.round(done.size/FLAT.length*100);
+  document.getElementById('pct').textContent=p+'%';
+  document.getElementById('bar').style.width=p+'%';
+  const left=FLAT.length-done.size;
+  document.getElementById('hint').textContent = p===100
+    ? 'Курс пройдено. Сертифікат доступний для завантаження'
+    : `Залишилось ${left} ${left===1?'урок':left<5?'уроки':'уроків'} до сертифіката`;
+}
+
+/* мобільне меню кабінету */
+const aside=document.getElementById('aside'), scrim=document.getElementById('scrim');
+function closeSide(){aside.classList.remove('open');scrim.classList.remove('on')}
+document.getElementById('burger').onclick=()=>{
+  aside.classList.toggle('open'); scrim.classList.toggle('on',aside.classList.contains('open'));
+};
+scrim.onclick=closeSide;
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on'); sideTab=t.dataset.tab; renderSide();
+});
+
+/* ================= ЛЕНДИНГ: REVEAL, NAV ================= */
+const ioR=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');ioR.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>ioR.observe(el));
+window.addEventListener('scroll',()=>{
+  const n=document.getElementById('nav'); if(n)n.classList.toggle('scrolled',window.scrollY>20)},{passive:true});
+
+/* перебудова дороги при зміні розміру */
+let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{
+  if(!document.getElementById('view-landing').classList.contains('hidden')) buildRoad();
+},220)});
+
+buildRoad();
+
+/* ================= СТАРТ: відновлення сесії ================= */
+(async function boot(){
+  await loadUser();
+
+  // повернення після Google-входу або підтвердження пошти
+  const returning = /access_token|code=|type=recovery/.test(location.hash+location.search);
+  if(returning && user){
+    history.replaceState({},'',location.pathname);
+    await go(paid?'cabinet':'checkout');
+  } else {
+    await go('landing');
+  }
+
+  // якщо доступ відкрили в базі, поки вкладка була відкрита — підхопиться
+  sb.auth.onAuthStateChange(async (event)=>{
+    if(event==='SIGNED_OUT'){ user=null; profile=null; paid=false; done.clear(); updateAuthUI(); return; }
+    if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED') await loadUser();
+  });
+})();
+</script>
+</body>
+</html>
