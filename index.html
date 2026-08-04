@@ -1339,22 +1339,32 @@ buildRoad();
 
 /* ================= СТАРТ: відновлення сесії ================= */
 (async function boot(){
-  await loadUser();
+  /* адресу читаємо ДО того, як supabase-js вичистить із неї ?code= */
+  const RETURNING = /access_token|[?&]code=|type=recovery/.test(location.hash+location.search);
+  let landed = false;
 
-  // повернення після Google-входу або підтвердження пошти
-  const returning = /access_token|code=|type=recovery/.test(location.hash+location.search);
-  if(returning && user){
-    history.replaceState({},'',location.pathname);
-    await go(paid?'cabinet':'checkout');
-  } else {
-    await go('landing');
+  async function settle(){
+    if(landed || !user) return;
+    landed = true;
+    if(RETURNING){
+      history.replaceState({},'',location.pathname);
+      await go(paid?'cabinet':'checkout');
+    }
   }
 
-  // якщо доступ відкрили в базі, поки вкладка була відкрита — підхопиться
+  /* слухач вішаємо ПЕРШИМ: інакше подія входу може прилетіти
+     раніше, ніж ми підпишемось, і шапка залишиться розлогіненою */
   sb.auth.onAuthStateChange(async (event)=>{
-    if(event==='SIGNED_OUT'){ user=null; profile=null; paid=false; done.clear(); updateAuthUI(); return; }
-    if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED') await loadUser();
+    if(event==='SIGNED_OUT'){
+      user=null; profile=null; paid=false; done.clear(); updateAuthUI(); return;
+    }
+    await loadUser();
+    await settle();
   });
+
+  await loadUser();
+  if(RETURNING && user){ await settle(); }
+  else { await go('landing'); }
 })();
 </script>
 </body>
