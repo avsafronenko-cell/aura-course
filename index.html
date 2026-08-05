@@ -1279,9 +1279,25 @@ function renderMain(){
       <button class="btn btn-ghost" id="next2" ${cur===FLAT.length-1?'disabled':''}>Наступний урок →</button>
     </div>`;
 
-  document.getElementById('playBtn').onclick=()=>{
-    document.getElementById('player').insertAdjacentHTML('beforeend',
-      '<div class="p-msg">Тут буде відеоплеєр.<br>Підключається після завантаження уроків на хостинг.</div>');
+  document.getElementById('playBtn').onclick=async()=>{
+    const box=document.getElementById('player');
+    const k=l.mi+'-'+l.li;
+    box.querySelector('.p-msg')?.remove();
+    const {data,error}=await sb.from('lesson_videos')
+      .select('video_url').eq('lesson_key',k).maybeSingle();
+    if(!error && data && data.video_url){
+      box.innerHTML='<iframe src="'+data.video_url+'" loading="lazy" '
+        +'style="border:0;position:absolute;inset:0;width:100%;height:100%;border-radius:16px" '
+        +'allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" '
+        +'allowfullscreen></iframe>';
+      box.style.position='relative';
+      return;
+    }
+    const msg = (!error && data && !data.video_url)
+      ? 'Відео цього уроку ще завантажується.<br>Зʼявиться тут найближчим часом.'
+      : (paid ? 'Відео недоступне. Онови сторінку або напиши в підтримку '+TG_NICK+'.'
+              : 'Відео відкриється після оплати курсу.');
+    box.insertAdjacentHTML('beforeend','<div class="p-msg">'+msg+'</div>');
   };
   document.getElementById('mark').onclick=async(ev)=>{
     const k=l.mi+'-'+l.li;
