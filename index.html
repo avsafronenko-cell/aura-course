@@ -398,7 +398,6 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
     <div class="nav-right">
       <button class="btn btn-ghost nav-cta" id="nav-login" onclick="go('login')">Увійти</button>
       <button class="btn btn-primary nav-cta" id="nav-buy" onclick="go('register')">Купити за 299 ₴</button>
-      <button class="btn btn-ghost nav-cta hidden" id="nav-cab" onclick="go('cabinet')">Мій кабінет</button>
       <div class="ava hidden" id="nav-ava" onclick="openProfile()" title="Профіль">S</div>
     </div>
   </div>
@@ -912,7 +911,7 @@ function paintAvatar(el){
 function updateAuthUI(){
   const inn=!!user;
   const set=(id,hide)=>{const e=document.getElementById(id); if(e)e.classList.toggle('hidden',hide)};
-  set('nav-login',inn); set('nav-buy',inn); set('nav-cab',!inn); set('nav-ava',!inn);
+  set('nav-login',inn); set('nav-buy',inn); set('nav-ava',!inn);
   paintAvatar(document.getElementById('nav-ava'));
   paintAvatar(document.getElementById('cab-ava'));
 }
