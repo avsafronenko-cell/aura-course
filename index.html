@@ -1349,7 +1349,8 @@ buildRoad();
     landed = true;
     if(RETURNING){
       history.replaceState({},'',location.pathname);
-      await go(paid?'cabinet':'checkout');
+      /* лишаємось на головній: шапка сама покаже аватар */
+      await go(paid?'cabinet':'landing');
     }
   }
 
