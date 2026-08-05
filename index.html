@@ -381,7 +381,9 @@ const PRICE      = 299;
 const SUPABASE_URL = "https://dvxvqipwdajsaegawcuw.supabase.co";
 const SUPABASE_KEY = "sb_publishable_pMKqvdBmcjWy5TkuwScW4A_dh5IikyK";
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth:{ flowType:'implicit', detectSessionInUrl:true, persistSession:true, autoRefreshToken:true }
+});
 </script>
 
 <!-- ==================== ЛЕНДИНГ ==================== -->
@@ -1364,7 +1366,13 @@ buildRoad();
 
   await loadUser();
   if(RETURNING && user){ await settle(); }
-  else { await go('landing'); }
+  else {
+    await go('landing');
+    if(RETURNING && !user){
+      openDocMsg('Не вдалося завершити вхід',
+        '<p>Google підтвердив акаунт, але браузер не зберіг сесію. Спробуй ще раз — або напиши в підтримку '+TG_NICK+'.</p>');
+    }
+  }
 })();
 </script>
 </body>
