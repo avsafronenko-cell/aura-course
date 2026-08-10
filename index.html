@@ -276,6 +276,23 @@ main.cab::-webkit-scrollbar-thumb{background:#C9D3F5;border-radius:10px}
 .crumb{font-size:12.5px;color:var(--muted);margin-bottom:10px}
 .crumb b{color:var(--blue);font-weight:600}
 .cab h1{font-size:clamp(21px,3.4vw,28px);letter-spacing:-.9px;margin-bottom:18px}
+.lesson-body{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:26px 28px;line-height:1.7;font-size:16px;color:var(--text)}
+.lesson-body h2{font-size:21px;margin:26px 0 10px;letter-spacing:-.4px}
+.lesson-body h3{font-size:17.5px;font-weight:700;margin:20px 0 8px}
+.lesson-body p{margin-bottom:14px}
+.lesson-body ul,.lesson-body ol{margin:0 0 14px 22px}
+.lesson-body li{margin-bottom:7px}
+.lesson-body b,.lesson-body strong{font-weight:700}
+.lesson-body pre{background:#F5F7FD;border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;overflow-x:auto;font-size:14px;line-height:1.55;margin-bottom:16px;white-space:pre-wrap}
+.lesson-body code{background:var(--blue-soft);color:var(--blue-dark);padding:2px 6px;border-radius:6px;font-size:14px}
+.lesson-body pre code{background:none;padding:0;color:var(--text)}
+.lesson-body blockquote{border-left:3px solid var(--blue);background:#F7F9FF;
+  padding:12px 18px;border-radius:0 12px 12px 0;margin-bottom:16px;color:var(--muted)}
+.lesson-body img{max-width:100%;border-radius:12px;margin-bottom:16px}
+.lesson-body a{color:var(--blue);font-weight:600}
+.lb-load,.lb-msg{color:var(--muted);text-align:center;padding:26px 10px}
 .player{aspect-ratio:16/9;border-radius:16px;background:linear-gradient(160deg,#EEF2FD,#E3E9FA);
   display:grid;place-items:center;position:relative;margin-bottom:18px;overflow:hidden}
 .play{width:74px;height:74px;border-radius:50%;background:var(--blue);color:#fff;
@@ -408,7 +425,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
     <div>
       <div class="eyebrow">Курс по роботі з Claude</div>
       <h1>Від першого промту до власних <em>AI-агентів</em></h1>
-      <p class="lead">10 уроків по 10 хвилин, де я показую екран і роблю разом з тобою. Починаємо з нуля — з першого запиту в чат. Закінчуємо агентом, який відповідає твоїм клієнтам у Telegram. Без програмування.</p>
+      <p class="lead">10 текстових уроків, кожен на 10 хвилин читання, з покроковими прикладами й готовими промптами. Починаємо з нуля — з першого запиту в чат. Закінчуємо агентом, який відповідає твоїм клієнтам у Telegram. Без програмування.</p>
       <div class="hero-cta">
         <button class="btn btn-primary btn-lg" onclick="go('register')">Придбати курс за 299 ₴</button>
         <a href="#program" class="btn btn-ghost btn-lg">Дивитись програму</a>
@@ -425,7 +442,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
       <div class="price-now">299 <small>грн</small></div>
       <div class="price-note">Одна оплата. Доступ назавжди. Без підписок.</div>
       <ul class="price-list">
-        <li><span class="check">✓</span> 10 відеоуроків із записом екрана</li>
+        <li><span class="check">✓</span> 10 текстових уроків з прикладами</li>
         <li><span class="check">✓</span> Модуль «Агенти для бізнесу»</li>
         <li><span class="check">✓</span> 6 презентацій з термінологією</li>
         <li><span class="check">✓</span> 100 готових промптів</li>
@@ -1260,8 +1277,7 @@ function renderMain(){
   document.getElementById('cab-main').innerHTML=`
     <div class="crumb">Модуль ${l.mn} · <b>${l.mod}</b> · урок ${l.li+1} з ${COURSE[l.mi].les.length}</div>
     <h1>${l.t}</h1>
-    <div class="player" id="player"><button class="play" id="playBtn" aria-label="Відтворити">▶</button>
-      <div class="p-meta">${l.d} · 1080p</div></div>
+    <div class="lesson-body" id="lbody"><div class="lb-load">Завантажую урок…</div></div>
     <div class="act">
       <button class="btn btn-primary" id="mark" ${isDone?'style="background:var(--blue-soft);color:var(--blue);box-shadow:none"':''}>${isDone?'✓ Урок пройдено':'Позначити як пройдений'}</button>
       <button class="btn btn-ghost" id="prev" ${cur===0?'disabled':''}>← Попередній</button>
@@ -1279,26 +1295,22 @@ function renderMain(){
       <button class="btn btn-ghost" id="next2" ${cur===FLAT.length-1?'disabled':''}>Наступний урок →</button>
     </div>`;
 
-  document.getElementById('playBtn').onclick=async()=>{
-    const box=document.getElementById('player');
+  (async()=>{
+    const box=document.getElementById('lbody');
     const k=l.mi+'-'+l.li;
-    box.querySelector('.p-msg')?.remove();
-    const {data,error}=await sb.from('lesson_videos')
-      .select('video_url').eq('lesson_key',k).maybeSingle();
-    if(!error && data && data.video_url){
-      box.innerHTML='<iframe src="'+data.video_url+'" loading="lazy" '
-        +'style="border:0;position:absolute;inset:0;width:100%;height:100%;border-radius:16px" '
-        +'allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" '
-        +'allowfullscreen></iframe>';
-      box.style.position='relative';
+    const {data,error}=await sb.from('lesson_content')
+      .select('body').eq('lesson_key',k).maybeSingle();
+    if(error||!data){
+      box.innerHTML='<div class="lb-msg">'+(paid
+        ? 'Не вдалося завантажити урок. Онови сторінку або напиши в підтримку '+TG_NICK+'.'
+        : 'Урок відкриється після оплати курсу.')+'</div>';
       return;
     }
-    const msg = (!error && data && !data.video_url)
-      ? 'Відео цього уроку ще завантажується.<br>Зʼявиться тут найближчим часом.'
-      : (paid ? 'Відео недоступне. Онови сторінку або напиши в підтримку '+TG_NICK+'.'
-              : 'Відео відкриється після оплати курсу.');
-    box.insertAdjacentHTML('beforeend','<div class="p-msg">'+msg+'</div>');
-  };
+    box.innerHTML = (data.body && data.body.trim())
+      ? data.body
+      : '<div class="lb-msg">Текст цього уроку ще готується.<br>Зʼявиться тут найближчим часом.</div>';
+  })();
+
   document.getElementById('mark').onclick=async(ev)=>{
     const k=l.mi+'-'+l.li;
     const btn=ev.currentTarget; busy(btn,true);
